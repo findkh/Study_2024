@@ -2,6 +2,7 @@ package jpabook.model.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -10,16 +11,21 @@ import javax.persistence.ManyToOne;
 public class Member {
 
 	@Id
+	@GeneratedValue
 	@Column(name = "member_id")
-	private String id;
+	private Long id;
 	
 	private String username;
 
-	public String getId() {
+	@ManyToOne
+	@JoinColumn(name = "team_id", insertable = false, updatable = false)
+	private Team team;
+
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -31,10 +37,16 @@ public class Member {
 		this.username = username;
 	}
 
+	public Team getTeam() {
+		return team;
+	}
+
+	public void setTeam(Team team) {
+		this.team = team;
+	}
+
 	@Override
 	public String toString() {
-		return "Member [id=" + id + ", username=" + username + "]";
+		return "Member [id=" + id + ", username=" + username + ", team=" + team + "]";
 	}
-	
-	
 }
