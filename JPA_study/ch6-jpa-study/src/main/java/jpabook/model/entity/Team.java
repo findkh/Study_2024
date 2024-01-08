@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 
 @Entity
@@ -16,15 +17,9 @@ public class Team {
 	
 	private String name;
 
-	@OneToMany(mappedBy = "team")
+	@OneToMany
+	@JoinColumn(name = "team_id")
 	private List<Member> members = new ArrayList<Member>();
-	
-	public void addMember(Member member) {
-		this.members.add(member);
-		if(member.getTeam() != this) {
-			member.setTeam(this);
-		}
-	}
 
 	public String getId() {
 		return id;
@@ -49,8 +44,9 @@ public class Team {
 	public void setMembers(List<Member> members) {
 		this.members = members;
 	}
-	
-	
-	
-	
+
+	@Override
+	public String toString() {
+		return "Team [id=" + id + ", name=" + name + ", members=" + members + "]";
+	}
 }

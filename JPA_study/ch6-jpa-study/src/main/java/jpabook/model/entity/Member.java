@@ -14,18 +14,6 @@ public class Member {
 	private String id;
 	
 	private String username;
-	
-	@ManyToOne
-	@JoinColumn(name = "team_id")
-	private Team team;
-
-	public void setTeam(Team team) {
-		this.team = team;
-		
-		if(!team.getMembers().contains(this)) {
-			team.getMembers().add(this);
-		}
-	}
 
 	public String getId() {
 		return id;
@@ -43,10 +31,10 @@ public class Member {
 		this.username = username;
 	}
 
-	public Team getTeam() {
-		return team;
+	@Override
+	public String toString() {
+		return "Member [id=" + id + ", username=" + username + "]";
 	}
-
-
+	
 	
 }
