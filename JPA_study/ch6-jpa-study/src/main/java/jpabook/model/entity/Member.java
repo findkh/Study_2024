@@ -19,6 +19,14 @@ public class Member {
 	@JoinColumn(name = "team_id")
 	private Team team;
 
+	public void setTeam(Team team) {
+		this.team = team;
+		
+		if(!team.getMembers().contains(this)) {
+			team.getMembers().add(this);
+		}
+	}
+
 	public String getId() {
 		return id;
 	}
@@ -39,12 +47,6 @@ public class Member {
 		return team;
 	}
 
-	public void setTeam(Team team) {
-		this.team = team;
-	}
 
-	@Override
-	public String toString() {
-		return "Member [id=" + id + ", username=" + username + ", team=" + team + "]";
-	}
+	
 }
