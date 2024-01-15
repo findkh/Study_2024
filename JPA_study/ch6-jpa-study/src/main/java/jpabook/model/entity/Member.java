@@ -6,20 +6,20 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Member {
 
-	@Id
-	@GeneratedValue
+	@Id @GeneratedValue
 	@Column(name = "member_id")
 	private Long id;
 	
 	private String username;
-
-	@ManyToOne
-	@JoinColumn(name = "team_id", insertable = false, updatable = false)
-	private Team team;
+	
+	@OneToOne
+	@JoinColumn(name = "locker_id")
+	private Locker locker;
 
 	public Long getId() {
 		return id;
@@ -37,16 +37,53 @@ public class Member {
 		this.username = username;
 	}
 
-	public Team getTeam() {
-		return team;
+	public Locker getLocker() {
+		return locker;
 	}
 
-	public void setTeam(Team team) {
-		this.team = team;
+	public void setLocker(Locker locker) {
+		this.locker = locker;
 	}
-
-	@Override
-	public String toString() {
-		return "Member [id=" + id + ", username=" + username + ", team=" + team + "]";
-	}
+	
+	
+	
+//	@Id
+//	@GeneratedValue
+//	@Column(name = "member_id")
+//	private Long id;
+//	
+//	private String username;
+//
+//	@ManyToOne
+//	@JoinColumn(name = "team_id", insertable = false, updatable = false)
+//	private Team team;
+//
+//	public Long getId() {
+//		return id;
+//	}
+//
+//	public void setId(Long id) {
+//		this.id = id;
+//	}
+//
+//	public String getUsername() {
+//		return username;
+//	}
+//
+//	public void setUsername(String username) {
+//		this.username = username;
+//	}
+//
+//	public Team getTeam() {
+//		return team;
+//	}
+//
+//	public void setTeam(Team team) {
+//		this.team = team;
+//	}
+//
+//	@Override
+//	public String toString() {
+//		return "Member [id=" + id + ", username=" + username + ", team=" + team + "]";
+//	}
 }

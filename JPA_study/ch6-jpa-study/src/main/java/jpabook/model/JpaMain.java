@@ -19,7 +19,7 @@ public class JpaMain {
 
 		try {
 			tx.begin(); //트랜잭션 시작
-			testSave(em);
+			
 			tx.commit();//트랜잭션 커밋
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -30,20 +30,20 @@ public class JpaMain {
 		emf.close(); //엔티티 매니저 팩토리 종료
 	}
 	
-	public static void testSave(EntityManager em) {
-		Member member1 = new Member();
-			member1.setUsername("memeber1");
-			
-		Member member2 = new Member();
-			member2.setUsername("member2");
-			
-		Team team1 = new Team();
-			team1.setName("team1");
-		team1.getMembers().add(member1);
-		team1.getMembers().add(member2);
-		
-		em.persist(member1);
-		em.persist(member2);
-		em.persist(team1);
-	}
+//	public static void testSave(EntityManager em) {
+//		Member member1 = new Member();
+//			member1.setUsername("memeber1");
+//			
+//		Member member2 = new Member();
+//			member2.setUsername("member2");
+//			
+//		Team team1 = new Team();
+//			team1.setName("team1");
+//		team1.getMembers().add(member1);
+//		team1.getMembers().add(member2);
+//		
+//		em.persist(member1);
+//		em.persist(member2);
+//		em.persist(team1);
+//	}
 }

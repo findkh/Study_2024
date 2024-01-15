@@ -10,7 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 
-@Entity
+//@Entity
 public class Team {
 	@Id
 	@GeneratedValue
