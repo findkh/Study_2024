@@ -9,19 +9,25 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Member {
 
-	//다대다 단방향
+	//다대다 양방향
 	@Id @Column(name = "member_id")
 	private String id;
-	
+
 	private String username;
 	
-	@ManyToMany
-	@JoinTable(name = "member_product", joinColumns = @JoinColumn(name = "member_id"), inverseJoinColumns = @JoinColumn(name = "product_id"))
-	private List<Product> products = new ArrayList<Product>();
+	//역방향
+	@OneToMany(mappedBy = "member")
+	private List<MemberProduct> memberProducts;
+
+	@Override
+	public String toString() {
+		return "Member [id=" + id + ", memberProducts=" + memberProducts + "]";
+	}
 
 	public String getId() {
 		return id;
@@ -39,21 +45,59 @@ public class Member {
 		this.username = username;
 	}
 
-	public List<Product> getProducts() {
-		return products;
+	public List<MemberProduct> getMemberProducts() {
+		return memberProducts;
 	}
 
-	public void setProducts(List<Product> products) {
-		this.products = products;
+	public void setMemberProducts(List<MemberProduct> memberProducts) {
+		this.memberProducts = memberProducts;
 	}
 
-	@Override
-	public String toString() {
-		return "Member [id=" + id + ", username=" + username + ", products=" + products + "]";
-	}
 	
 	
 	
+	
+//	//다대다 단방향
+//	@Id @Column(name = "member_id")
+//	private String id;
+//	
+//	private String username;
+//	
+//	@ManyToMany
+//	@JoinTable(name = "member_product", joinColumns = @JoinColumn(name = "member_id"), inverseJoinColumns = @JoinColumn(name = "product_id"))
+//	private List<Product> products = new ArrayList<Product>();
+//
+//	public String getId() {
+//		return id;
+//	}
+//
+//	public void setId(String id) {
+//		this.id = id;
+//	}
+//
+//	public String getUsername() {
+//		return username;
+//	}
+//
+//	public void setUsername(String username) {
+//		this.username = username;
+//	}
+//
+//	public List<Product> getProducts() {
+//		return products;
+//	}
+//
+//	public void setProducts(List<Product> products) {
+//		this.products = products;
+//	}
+//
+//	@Override
+//	public String toString() {
+//		return "Member [id=" + id + ", username=" + username + ", products=" + products + "]";
+//	}
+//	
+//	
+//	
 	
 	
 //	@Id @GeneratedValue
