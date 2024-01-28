@@ -15,3 +15,19 @@ export const getList = async (pageParam) => {
   });
   return res.data;
 };
+
+export const postAdd = async (todObj) => {
+  const res = await axios.post(`${prefix}/`, todObj);
+  console.log(res);
+  return res.data;
+};
+
+export const deleteOne = async (tno) => {
+  const res = await axios.delete(`${prefix}/${tno}`);
+  return res.data;
+};
+
+export const putOne = async (todo) => {
+  const res = await axios.put(`${prefix}/${todo.tno}`, todo);
+  return res.data;
+};
