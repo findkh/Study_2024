@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>파일 업로드 예제</title>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+</head>
+<body>
+    <h1>파일 업로드 예제</h1>
+    <input type="file" id="fileInput">
+    <button onclick="uploadFile()">업로드</button>
+    <button onclick="downloadPDFFile()">PDF 파일 다운로드</button>
+
+    <script>
+        function uploadFile() {
+            var fileInput = document.getElementById('fileInput');
+            var file = fileInput.files[0];
+
+            var formData = new FormData();
+            formData.append('file', file);
+
+            $.ajax({
+                url: '/upload',
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    console.log(response);
+                },
+                error: function(error) {
+                    console.error('파일 업로드 실패:', error);
+                }
+            });
+        }
+
+        function downloadPDFFile() {
+            var fileName = 'dd98f603-4a38-4af3-8278-2e5186b9a297_pdf_test.pdf';
+
+            // GET 요청으로 fileName을 서버에 전송
+            window.location.href = '/download?fileName=' + encodeURIComponent(fileName);
+        }
+        
+//         function downloadPDFFile() {
+//             var fileName = 'dd98f603-4a38-4af3-8278-2e5186b9a297_pdf_test.pdf';
+
+//             // POST 요청으로 fileName을 서버에 전송
+//             $.ajax({
+//                 url: '/download',
+//                 type: 'POST',
+//                 data: JSON.stringify({ fileName: fileName }),
+//                 contentType: 'application/json',
+//                 success: function(response) {
+//                     console.log(response);
+//                 },
+//                 error: function(error) {
+//                     console.error('파일 다운로드 실패:', error);
+//                 }
+//             });
+//         }
+        
+//         function downloadPDFFile() {
+//             var fileName = 'dd98f603-4a38-4af3-8278-2e5186b9a297_pdf_test.pdf';
+//             window.location.href = '/download';
+//         }
+    </script>
+</body>
+</html>
