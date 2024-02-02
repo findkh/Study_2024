@@ -4,16 +4,21 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.text.PDFTextStripper;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -106,4 +111,43 @@ public class FileController {
 //            return ResponseEntity.notFound().build();
 //        }
 //    }
+    
+
+    @PostMapping("/pdfToText")
+    @ResponseBody
+    public ResponseEntity<Map<String, String>> pdfToText(@RequestPart("file") MultipartFile file) {
+        Map<String, String> response = new HashMap<>();
+
+        if (file.isEmpty()) {
+            response.put("status", "fail");
+            response.put("message", "Please select a file!");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
+
+        try {
+            // PDF 파일을 PDDocument 객체로 로드
+            PDDocument document = PDDocument.load(file.getInputStream());
+
+            // PDF 문서의 텍스트 추출을 위한 PDFTextStripper 객체 생성
+            PDFTextStripper pdfTextStripper = new PDFTextStripper();
+
+            // PDF 문서의 텍스트 추출
+            String text = pdfTextStripper.getText(document);
+
+            // PDDocument 리소스 해제
+            document.close();
+
+            // 추출된 텍스트를 콘솔에 출력
+            System.out.println(text);
+
+            response.put("status", "success");
+            response.put("data", text);
+            return ResponseEntity.ok(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+            response.put("status", "fail");
+            response.put("message", "Failed to convert PDF to text!");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
 }
