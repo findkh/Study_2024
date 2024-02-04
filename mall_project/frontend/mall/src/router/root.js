@@ -1,5 +1,6 @@
 import { Suspense, lazy } from "react";
 import todoRouter from "./todoRouter";
+import productsRouter from "./productRouter";
 
 const { createBrowserRouter } = require("react-router-dom");
 
@@ -7,7 +8,7 @@ const Loading = <div>Loading...</div>;
 const Main = lazy(() => import("../pages/MainPage"));
 const About = lazy(() => import("../pages/AboutPage"));
 const TodoIndex = lazy(() => import("../pages/todo/IndexPage"));
-// const TodoList = lazy(() => import("../pages/todo/ListPage"));
+const ProductsIndex = lazy(() => import("../pages/products/IndexPage"));
 
 //createBrowserRouter : 어떤 경로에 어떤 컴포넌트를 보여줄지 결정하는 역할
 const root = createBrowserRouter([
@@ -35,6 +36,15 @@ const root = createBrowserRouter([
       </Suspense>
     ),
     children: todoRouter(),
+  },
+  {
+    path: "products",
+    element: (
+      <Suspense fallback={Loading}>
+        <ProductsIndex />
+      </Suspense>
+    ),
+    children: productsRouter(),
   },
 ]);
 

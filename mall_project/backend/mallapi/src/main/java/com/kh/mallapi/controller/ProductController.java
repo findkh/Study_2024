@@ -49,6 +49,30 @@ public class ProductController {
         return Map.of("result", pno);
     }
 
+    // @PostMapping("/")
+    // public Map<String, Long> register(ProductDTO productDTO) {
+    // log.info("register: {}", productDTO);
+
+    // List<MultipartFile> files = productDTO.getFiles();
+    // List<String> uploadFileNames = fileUtil.saveFiles(files);
+    // productDTO.setUploadFileNames(uploadFileNames);
+    // log.info(uploadFileNames);
+
+    // Long pno = productService.register(productDTO);
+
+    // Map<String, Long> result = null;
+
+    // try {
+    // System.out.println("sleep.....");
+    // Thread.sleep(6000);
+    // result = Map.of("result", pno);
+    // } catch (InterruptedException e) {
+    // e.printStackTrace();
+    // }
+
+    // return result;
+    // }
+
     @GetMapping("/view/{fileName}")
     public ResponseEntity<Resource> viewFileGET(@PathVariable String fileName) {
         System.out.println("============================");
