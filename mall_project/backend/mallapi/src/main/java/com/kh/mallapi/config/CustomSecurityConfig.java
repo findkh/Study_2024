@@ -14,6 +14,9 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import com.kh.mallapi.config.handler.APILoginFailHandler;
+import com.kh.mallapi.config.handler.APILoginSuccessHandler;
+
 import lombok.extern.log4j.Log4j2;
 
 @Configuration
@@ -32,6 +35,12 @@ public class CustomSecurityConfig {
         http.sessionManagement(sessionConfig -> sessionConfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         http.csrf(config -> config.disable());
+
+        http.formLogin(config -> {
+            config.loginPage("/api/member/login");
+            config.successHandler(new APILoginSuccessHandler());
+            config.failureHandler(new APILoginFailHandler());
+        });
 
         return http.build();
     }
