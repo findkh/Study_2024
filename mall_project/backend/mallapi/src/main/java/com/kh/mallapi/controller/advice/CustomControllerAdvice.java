@@ -9,6 +9,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.kh.mallapi.util.CustomJWTException;
+
 /* 잘못된 파라미터 등으로 인한 서버 내부의 예외 처리를 위해 RestControllerAdvice 구현 */
 
 @RestControllerAdvice
@@ -24,5 +26,11 @@ public class CustomControllerAdvice {
     protected ResponseEntity<?> handleIllegalArgumentException(MethodArgumentNotValidException e) {
         String msg = e.getMessage();
         return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(Map.of("msg", msg));
+    }
+
+    @ExceptionHandler(CustomJWTException.class)
+    protected ResponseEntity<?> handleJWTException(CustomJWTException e) {
+        String msg = e.getMessage();
+        return ResponseEntity.ok().body(Map.of("error", msg));
     }
 }

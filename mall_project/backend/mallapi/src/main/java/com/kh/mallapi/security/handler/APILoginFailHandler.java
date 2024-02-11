@@ -1,4 +1,4 @@
-package com.kh.mallapi.config.handler;
+package com.kh.mallapi.security.handler;
 
 import java.io.IOException;
 import java.io.PrintWriter;
