@@ -1,4 +1,3 @@
-import axios from "axios";
 import jwtAxios from "../util/jwtUtil";
 
 export const API_SERVER_HOST = "http://localhost:8080";
@@ -18,17 +17,17 @@ export const getList = async (pageParam) => {
 };
 
 export const postAdd = async (todObj) => {
-  const res = await axios.post(`${prefix}/`, todObj);
+  const res = await jwtAxios.post(`${prefix}/`, todObj);
   console.log(res);
   return res.data;
 };
 
 export const deleteOne = async (tno) => {
-  const res = await axios.delete(`${prefix}/${tno}`);
+  const res = await jwtAxios.delete(`${prefix}/${tno}`);
   return res.data;
 };
 
 export const putOne = async (todo) => {
-  const res = await axios.put(`${prefix}/${todo.tno}`, todo);
+  const res = await jwtAxios.put(`${prefix}/${todo.tno}`, todo);
   return res.data;
 };
