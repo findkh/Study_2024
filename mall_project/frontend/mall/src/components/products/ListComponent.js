@@ -1,12 +1,10 @@
-import { useEffect, useState } from "react";
 import { getList } from "../../api/productsApi";
 import useCustomMove from "../../hooks/useCustomMove";
 import FetchingModal from "../common/FetchingModal";
-
 import { API_SERVER_HOST } from "../../api/todoApi";
 import PageComponent from "../common/PageComponents";
-
 import useCustomLogin from "../../hooks/useCustomLogin";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 const host = API_SERVER_HOST;
 
@@ -24,26 +22,33 @@ const initState = {
 };
 
 const ListComponent = () => {
-  const { exceptionHandle } = useCustomLogin();
+  const { moveToLoginReturn } = useCustomLogin();
   const { page, size, refresh, moveToList, moveToRead } = useCustomMove();
-  const [serverData, setServerData] = useState(initState);
-  const [fetching, setFetching] = useState(false);
+  const { isFetching, data, error, isError } = useQuery(
+    ["products/list", { page, size, refresh }],
+    () => getList({ page, size }),
+    { staleTime: 1000 * 5 }
+  );
 
-  useEffect(() => {
-    setFetching(true);
+  const queryClient = useQueryClient(); //리액트 쿼리 초기화를 위한 현재 객체
 
-    getList({ page, size })
-      .then((data) => {
-        console.log(data);
-        setServerData(data);
-        setFetching(false);
-      })
-      .catch((err) => exceptionHandle(err));
-  }, [page, size, refresh]);
+  const handleClickPage = (pageParam) => {
+    if (pageParam.page === parseInt(page)) {
+      queryClient.invalidateQueries("products/list");
+    }
+    moveToList(pageParam);
+  };
+
+  if (isError) {
+    console.log(error);
+    return moveToLoginReturn();
+  }
+
+  const serverData = data || initState;
 
   return (
     <div className="border-2 border-blue-100 mt-10 mr-2 ml-2">
-      {fetching ? <FetchingModal /> : <></>}
+      {isFetching ? <FetchingModal /> : <></>}
 
       <div className="flex flex-wrap mx-auto p-6">
         {serverData.dtoList.map((product) => (
@@ -77,7 +82,7 @@ const ListComponent = () => {
 
       <PageComponent
         serverData={serverData}
-        movePage={moveToList}
+        movePage={handleClickPage}
       ></PageComponent>
     </div>
   );

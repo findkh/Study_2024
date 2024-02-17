@@ -3,6 +3,7 @@ import { postAdd } from "../../api/productsApi";
 import FetchingMoal from "../common/FetchingModal";
 import ResultModal from "../common/ResultModal";
 import useCustomMove from "../../hooks/useCustomMove";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const initState = {
   pname: "",
@@ -14,14 +15,14 @@ const initState = {
 const AddComponent = () => {
   const [product, setProduct] = useState({ ...initState });
   const uploadRef = useRef();
-  const [fetching, setFetching] = useState(false);
-  const [result, setResult] = useState(null);
   const { moveToList } = useCustomMove();
 
   const handleChangeProduct = (e) => {
     product[e.target.name] = e.target.value;
     setProduct({ ...product });
   };
+
+  const addMutation = useMutation((product) => postAdd(product));
 
   const handleClickAdd = (e) => {
     // console.log("클릭!");
@@ -30,35 +31,32 @@ const AddComponent = () => {
 
     const files = uploadRef.current.files;
     const formData = new FormData();
+
     for (let i = 0; i < files.length; i++) {
       formData.append("files", files[i]);
     }
+
     formData.append("pname", product.pname);
     formData.append("pdesc", product.pdesc);
     formData.append("price", product.price);
 
-    console.log(formData);
-
-    setFetching(true);
-
-    postAdd(formData).then((data) => {
-      setFetching(false);
-      setResult(data.result);
-    });
+    addMutation.mutate(formData);
   };
 
+  const queryClient = useQueryClient();
+
   const closeModal = () => {
-    setResult(null);
+    queryClient.invalidateQueries("products/list");
     moveToList({ page: 1 });
   };
 
   return (
     <div className="border-2 border-sky-200 mt-10 m-2 p-4">
-      {fetching ? <FetchingMoal /> : <></>}
-      {result ? (
+      {addMutation.isLoading ? <FetchingMoal /> : <></>}
+      {addMutation.isSuccess ? (
         <ResultModal
           title={"Product Add Result"}
-          content={`${result}번 등록 완료`}
+          content={`${addMutation.data.result}번 등록 완료`}
           callbackFn={closeModal}
         />
       ) : (
