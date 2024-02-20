@@ -20,7 +20,6 @@ const ReadComponent = ({ pno }) => {
   const { moveToList, moveToModify } = useCustomMove();
   const { loginState } = useCustomLogin();
   const { cartItems, changeCart } = useCustomCart();
-
   const { isFetching, data } = useQuery(["products", pno], () => getOne(pno), {
     staleTime: 1000 * 10 * 60,
     retry: 1,
@@ -28,7 +27,6 @@ const ReadComponent = ({ pno }) => {
 
   const handleClickAddCart = () => {
     let qty = 1;
-
     const addedItem = cartItems.filter((item) => item.pno === parseInt(pno))[0];
 
     if (addedItem) {
