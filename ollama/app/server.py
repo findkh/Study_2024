@@ -1,5 +1,5 @@
 from fastapi import FastAPI, HTTPException, Request
-from fastapi.responses import RedirectResponse, JSONResponse
+from fastapi.responses import RedirectResponse, JSONResponse, StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
 from typing import List, Union
 from langserve.pydantic_v1 import BaseModel, Field
@@ -8,6 +8,8 @@ from langserve import add_routes
 from chain import chain
 from chat import chain as chat_chain
 from llm import llm as model
+import json
+import asyncio
 
 
 app = FastAPI()
@@ -52,20 +54,50 @@ add_routes(
 add_routes(app, model, path="/llm")
 
 @app.post("/getAnswer")
-async def getAnswer(request: Request):
+async def get_answer(request: Request):
     try:
         req_info = await request.json()
-        query = req_info.get("query")
-        
-        if not query:
-            raise ValueError("query is required")
-        
-        print('query')
+        query = req_info.get("topic")
 
-        response = chain.invoke({"topic": query})
-        print(response)
-        
-        return JSONResponse(status_code=200, content={"status": "SUCCESS", "data": response})
+        if not query:
+            raise ValueError("Topic is required")
+
+        print('Received query:', query)
+
+        async def stream_generator(query):
+            index = 0  # 청크 인덱스 초기화
+            async for chunk in chain.astream({"topic": query}):
+                print(chunk)  # 로그 출력
+                # 클라이언트에 JSON 형식으로 스트리밍 (각 청크는 별도의 JSON 객체)
+                yield json.dumps({"index": index, "value": chunk}) + "\n"
+                index += 1  # 인덱스 증가
+
+        return StreamingResponse(stream_generator(query), media_type='application/json')
+
+    except ValueError as e:
+        return JSONResponse(status_code=400, content={"status": "ERROR", "message": str(e)})
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    
+# @app.post("/getAnswer")
+# async def get_answer(request: Request):
+#     try:
+#         req_info = await request.json()
+#         query = req_info.get("topic")
+
+#         if not query:
+#             raise ValueError("Topic is required")
+
+#         print('Received query:', query)
+
+#         async def stream_generator(query):
+#             # 여기서 chain.astream을 호출하여 LLM 모델로부터 데이터를 받습니다.
+#             async for chunks in chain.astream({"topic": query}):
+#                 print(chunks)  # 로그 출력
+#                 yield json.dumps(chunks) + "\n"  # 클라이언트에 JSON 형식으로 스트리밍
+
+#         return StreamingResponse(stream_generator(query), media_type='application/json')
+
     except ValueError as e:
         return JSONResponse(status_code=400, content={"status": "ERROR", "message": str(e)})
     except Exception as e:

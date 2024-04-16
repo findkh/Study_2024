@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Response Display</title>
+    <style>
+      #output {
+        white-space: pre-wrap; /* 공백과 줄바꿈을 유지 */
+        background: #f0f0f0;
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <button type="button" id="callBtn">Request Data</button>
+    <div id="output"></div>
+    <!-- 결과를 출력할 div -->
+
+    <script>
+      document.querySelector("#callBtn").addEventListener("click", fetchStream);
+
+      async function fetchStream() {
+        const response = await fetch("http://localhost:8000/getAnswer", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ topic: "임신중독증에 대해 설명해줘" }),
+        });
+
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder("utf-8");
+        const outputElement = document.getElementById("output");
+        outputElement.textContent = ""; // 이전 출력 내용을 클리어
+
+        try {
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+
+            const chunk = decoder.decode(value);
+            const messages = chunk.split("\n").filter((text) => text);
+
+            messages.forEach((message) => {
+              try {
+                const data = JSON.parse(message);
+                const formattedText = data.value.replace(/\\n/g, "\n");
+                outputElement.textContent +=
+                  formattedText + (formattedText.includes("\n") ? "" : " ");
+              } catch (e) {
+                console.error("Error parsing JSON:", e);
+              }
+            });
+          }
+        } catch (error) {
+          console.error("Error reading from stream", error);
+        }
+      }
+    </script>
+  </body>
+</html>
