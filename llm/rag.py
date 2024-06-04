@@ -28,7 +28,7 @@ vectorstore = FAISS.from_texts(questions,
                                distance_strategy=DistanceStrategy.COSINE)
 
 # 로컬에 FAISS 인덱스 저장
-MY_FAISS_INDEX = "kotiti_index_origin-2"
+MY_FAISS_INDEX = "test_index"
 vectorstore.save_local(MY_FAISS_INDEX)
 
 # 로컬에서 FAISS 인덱스 로드
