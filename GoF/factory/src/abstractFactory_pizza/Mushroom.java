@@ -1,0 +1,7 @@
+package abstractFactory_pizza;
+
+public class Mushroom implements Veggies{
+	public String toString() {
+		return "버섯";
+	}
+}
