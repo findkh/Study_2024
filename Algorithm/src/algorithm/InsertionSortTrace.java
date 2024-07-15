@@ -14,7 +14,7 @@ public class InsertionSortTrace {
 		ascendingOrder(a);
 		
 		//내림 차순 정렬
-//		descendingOrder(a);
+		descendingOrder(a);
 		
 	}
 	
