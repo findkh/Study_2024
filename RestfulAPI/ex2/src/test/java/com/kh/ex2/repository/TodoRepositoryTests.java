@@ -1,12 +1,17 @@
 package com.kh.ex2.repository;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +24,26 @@ import com.kh.ex2.entity.TodoEntity;
 public class TodoRepositoryTests {
 	@Autowired
 	private TodoRepository todoRepository;
+	
+	@Test
+	public void testListAll() {
+		Pageable pageable = PageRequest.of(0, 10, Sort.by("mno").descending());
+		Page<TodoEntity> result = todoRepository.listAll(pageable);
+		System.out.println(result.getContent());
+	}
+	
+	@Test
+	public void testPaging() {
+		Pageable pageable = PageRequest.of(0, 10, Sort.by("mno").descending());
+		Page<TodoEntity> result = todoRepository.findAll(pageable);
+		System.out.println(result.getTotalPages());
+		System.out.println(result.getTotalElements());
+		List<TodoEntity> todoEntityList = result.getContent();
+		
+		todoEntityList.forEach(todoEntity -> {
+			System.out.println(todoEntity);
+		});
+	}
 	
 	@Test
 	@Transactional
