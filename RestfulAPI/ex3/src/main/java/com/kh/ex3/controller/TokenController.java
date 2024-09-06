@@ -33,7 +33,7 @@ public class TokenController {
 		
 		MemberDTO memberDTOResult = memberService.read(memberDTO.getMid(), memberDTO.getMpw());
 		
-		String mid = memberDTOResult.getMemail();
+		String mid = memberDTOResult.getMid();
 		Map<String, Object> dataMap = memberDTOResult.getDataMap();
 		String accessToken = jwtUtil.createToken(dataMap, 10);
 		String refreshToken = jwtUtil.createToken(Map.of("mid", mid), 60 * 24 * 7);
