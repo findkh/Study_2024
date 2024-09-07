@@ -13,7 +13,7 @@ import lombok.extern.log4j.Log4j2;
 @RequestMapping("/api/v1/samples")
 public class SampleController {
 	
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasRole('ROLE_USER')")
 	@GetMapping("/list")
 	public ResponseEntity<?> list(){
 		log.info("list...");

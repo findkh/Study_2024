@@ -41,7 +41,7 @@ public class TokenController {
 		log.info("accessToken: " + accessToken);
 		log.info("refreshToken: " + refreshToken);
 		
-		return ResponseEntity.ok(Map.of("accessToekn", accessToken, "refreshToken", refreshToken));
+		return ResponseEntity.ok(Map.of("accessToken", accessToken, "refreshToken", refreshToken));
 	}
 	
 	@PostMapping("/refresh")
@@ -111,7 +111,7 @@ public class TokenController {
 	}
 	
 	private Map<String, String> makeData(String mid, String accessToken, String refreshToken){
-		return Map.of("mid", mid, "AccessToken", accessToken, "refreshToken", refreshToken);
+		return Map.of("mid", mid, "accessToken", accessToken, "refreshToken", refreshToken);
 	}
 	
 	private ResponseEntity<Map<String, String>> handleException(String msg, int status){
