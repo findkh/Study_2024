@@ -1,4 +1,4 @@
-package com.kh.ex3.member;
+package com.kh.ex3.member.repository;
 
 import java.util.Optional;
 
@@ -10,7 +10,6 @@ import org.springframework.test.annotation.Commit;
 
 import com.kh.ex3.member.entity.MemberEntity;
 import com.kh.ex3.member.exception.MemberExceptions;
-import com.kh.ex3.member.repository.MemberRepository;
 
 import jakarta.transaction.Transactional;
 
