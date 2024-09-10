@@ -8,10 +8,16 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.kh.ex3.product.dto.ProductDTO;
+import com.kh.ex3.product.dto.ProductListDTO;
 import com.kh.ex3.product.entity.ProductEntity;
 
 @DataJpaTest
@@ -21,6 +27,58 @@ public class ProductRepositoryTests {
 	
 	@Autowired
 	private ProductRepository productRepository;
+	
+	@Test
+	public void testListQuery() {
+		// 페이지 번호와 사이즈 설정 (1 페이지, 10개의 데이터)
+		Pageable pageable = PageRequest.of(0, 10);
+		
+		// listQuery 메서드를 사용하여 페이징된 결과를 가져옴
+		Page<ProductDTO> result = productRepository.listQuery(pageable);
+		
+		// 첫 번째 상품의 정보 출력
+		result.getContent().forEach(productDTO -> {
+			System.out.println(productDTO);
+		});
+	}
+	
+	@Test
+	public void testListFetchAllImages() {
+		Pageable pageable = PageRequest.of(0, 10, Sort.by("pno").descending());
+		Page<ProductDTO> result = productRepository.listFetchAllImages(pageable);
+		
+		for(ProductDTO productDTO : result.getContent()) {
+			System.out.println(productDTO);
+		}
+		
+	}
+	
+	@Transactional
+	@Test
+	public void testListWithAllImages() {
+		Pageable pageable = PageRequest.of(0, 10, Sort.by("pno").descending());
+		Page<ProductDTO> result = productRepository.listWithAllImages(pageable);
+		result.getContent().forEach(productDTO -> {
+			System.out.println(productDTO);
+		});
+	}
+	
+	@Test
+	public void testList() {
+		Pageable pageable = PageRequest.of(0, 10, Sort.by("pno").descending());
+		Page<ProductListDTO> result = productRepository.list(pageable);
+		result.getContent().forEach(productListDTO -> {
+			System.out.println(productListDTO);
+		});
+	}
+	
+	@Test
+	public void testReadDTO() {
+		Long pno = 10L;
+		Optional<ProductDTO> result = productRepository.getProductDTO(pno);
+		ProductDTO productDTO = result.get();
+		System.out.println(productDTO);
+	}
 	
 	@Test
 	@Transactional
