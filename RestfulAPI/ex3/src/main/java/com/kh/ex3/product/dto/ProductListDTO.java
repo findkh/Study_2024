@@ -11,4 +11,5 @@ public class ProductListDTO {
 	private int price;
 	private String writer;
 	private String productImage;
+	private long reviewCount;
 }

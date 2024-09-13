@@ -13,4 +13,8 @@ public interface ProductSearch {
 	
 	//페치 조인
 	Page<ProductDTO> listFetchAllImages(Pageable pageable);
+	
+	Page<ProductListDTO> listWithReviewCount(Pageable pageable);
+	
+	Page<ProductDTO> listWIthAllImagesReviewCount(Pageable pageable);
 }

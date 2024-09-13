@@ -29,6 +29,8 @@ public class ProductDTO {
 	
 	private List<String> imageList;
 	
+	private long reviewCount;
+	
 	public ProductDTO(ProductEntity productEntity) {
 		this.pno = productEntity.getPno();
 		this.pname = productEntity.getPname();

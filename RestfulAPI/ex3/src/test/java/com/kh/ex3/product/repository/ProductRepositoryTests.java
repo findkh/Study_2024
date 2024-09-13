@@ -28,6 +28,27 @@ public class ProductRepositoryTests {
 	@Autowired
 	private ProductRepository productRepository;
 	
+	@Transactional
+	@Test
+	public void testListWithALlImagesReviewCount() {
+		Pageable pageable = PageRequest.of(0, 10, Sort.by("pno"));
+		Page<ProductDTO> result = productRepository.listWIthAllImagesReviewCount(pageable);
+		result.getContent().forEach(productDTO -> {
+			System.out.println(productDTO);
+		});
+	}
+	
+	@Test
+	public void testListWithReviewCount() {
+		Pageable pageable = PageRequest.of(0, 10, Sort.by("pno"));
+		
+		Page<ProductListDTO> result = productRepository.listWithReviewCount(pageable);
+		
+		result.getContent().forEach(productListDTO -> {
+			System.out.println(productListDTO);
+		});
+	}
+	
 	@Test
 	public void testListQuery() {
 		// 페이지 번호와 사이즈 설정 (1 페이지, 10개의 데이터)
