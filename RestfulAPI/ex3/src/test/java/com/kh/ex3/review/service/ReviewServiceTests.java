@@ -23,21 +23,21 @@ public class ReviewServiceTests {
 			e.printStackTrace();
 		}
 	}
-//	
-//	@Test
-//	public void testRegister() {
-//		try {
-//			Long pno = 1000L;
-//			ReviewDTO reviewDTO = ReviewDTO.builder()
-//					.reviewText("리뷰 내용")
-//					.score(5)
-//					.reviewer("reviewer1")
-//					.pno(pno)
-//					.build();
-//			
-//			reviewService.register(reviewDTO);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
+	
+	@Test
+	public void testRegister() {
+		try {
+			Long pno = 1000L;
+			ReviewDTO reviewDTO = ReviewDTO.builder()
+					.reviewText("리뷰 내용")
+					.score(5)
+					.reviewer("reviewer1")
+					.pno(pno)
+					.build();
+			
+			reviewService.register(reviewDTO);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }

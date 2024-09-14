@@ -55,6 +55,19 @@ public class ReviewService {
 		}
 	}
 	
+	public ReviewDTO modify(ReviewDTO reviewDTO) {
+		ReviewEntity reviewEntity = reviewRepository.findById(reviewDTO.getRno()).orElseThrow(ReviewExceptions.REVIEW_NOT_FOUND::get);
+		
+		try {
+			reviewEntity.changeReviewText(reviewDTO.getReviewText());
+			reviewEntity.changeScore(reviewDTO.getScore());
+			return new ReviewDTO(reviewEntity);
+		} catch(Exception e) {
+			log.error(e.getMessage());
+			throw ReviewExceptions.REVIEW_NOT_MODIFIED.get();
+		}
+	}
+	
 	public Page<ReviewDTO> getList(ReviewPageRequestDTO reviewPageRequestDTO){
 		Long pno = reviewPageRequestDTO.getPno();
 		Pageable pageable = reviewPageRequestDTO.getPageable(Sort.by("rno").descending());

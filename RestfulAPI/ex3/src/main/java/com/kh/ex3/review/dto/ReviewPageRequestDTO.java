@@ -16,15 +16,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ReviewPageRequestDTO {
-	
 	@Min(1)
 	@Builder.Default
 	private int page = 1;
 	
-	@Min(20)
+	@Min(10)
 	@Max(100)
 	@Builder.Default
-	private int size = 20;
+	private int size = 10;
 	
 	private Long pno;
 	
