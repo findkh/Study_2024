@@ -7,6 +7,7 @@ import { useState } from 'react'
 import Bulb from './components/Bulb'
 import Counter from './components/Counter'
 import Register from './components/Register'
+import HookExam from './components/HookExample'
 
 // const buttonProps = {
 //   text: "메일",
@@ -15,13 +16,11 @@ import Register from './components/Register'
 // }
 
 
-
-
-
 function App() {
   return (
     <>
-      <Register />
+      <HookExam/>
+      {/* <Register /> */}
       {/* <Bulb />
       <Counter /> */}
       {/* <Button {...buttonProps}/>
