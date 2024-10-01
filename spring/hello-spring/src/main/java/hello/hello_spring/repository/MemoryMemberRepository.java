@@ -1,4 +1,4 @@
-package repository;
+package hello.hello_spring.repository;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -6,8 +6,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import domain.Member;
+import org.springframework.stereotype.Repository;
 
+import hello.hello_spring.domain.Member;
+
+//@Repository
 public class MemoryMemberRepository implements MemberRepository {
 	
 	private static Map<Long, Member> store = new HashMap<>();
@@ -35,6 +38,10 @@ public class MemoryMemberRepository implements MemberRepository {
 	@Override
 	public List<Member> findAll() {
 		return new ArrayList<>(store.values());
+	}
+	
+	public void clearStore() {
+		store.clear();
 	}
 
 }
