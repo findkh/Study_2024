@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>STOMP WebSocket Example</title>
+	<script src="https://cdn.jsdelivr.net/sockjs/1.0.0/sockjs.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+</head>
+<body>
+	<div>
+		<h2>WebSocket Chat</h2>
+		<input type="text" id="name" placeholder="Enter your name" />
+		<button onclick="sendMessage()">Send</button>
+	</div>
+
+	<div id="response"></div>
+
+	<script>
+		var stompClient = null;
+
+		function connect() {
+			var socket = new SockJS('/ws');
+			stompClient = Stomp.over(socket);
+			stompClient.connect({}, function (frame) {
+				console.log('Connected: ' + frame);
+				// 메시지 수신
+				stompClient.subscribe('/topic/messages', function (messageOutput) {
+					showMessage(JSON.parse(messageOutput.body).content);
+				});
+			});
+		}
+		
+		function sendMessage() {
+			var name = document.getElementById('name').value;
+			stompClient.send("/app/message", {}, JSON.stringify({'name': name}));
+		}
+		
+		function showMessage(message) {
+			document.getElementById("response").innerHTML += "<p>" + message + "</p>";
+		}
+
+		// 페이지 로드 시 웹소켓 연결
+		window.onload = function () {
+			connect();
+		};
+	</script>
+</body>
+</html>
