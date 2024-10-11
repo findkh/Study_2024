@@ -13,8 +13,8 @@ export default function ArticleList({ articlesCount, articles, onFavoriteChange,
   return (
     <>
       {/* 각 기사를 ArticlePreview 컴포넌트로 렌더링 */}
-      {articles.map((article) => (
-        <ArticlePreview key={article.slug} article={article} onFavoriteChange={onFavoriteChange} />
+      {articles.map((article, idx) => (
+        <ArticlePreview key={idx} article={article} onFavoriteChange={onFavoriteChange} />
       ))}
 
       {/* 페이지네이션 */}

@@ -5,6 +5,9 @@ import Auth from "./pages/Auth";
 import { AuthProvider } from "./context/AuthContext";
 import Home from "./pages/Home";
 import Article from "./pages/Article";
+import Editor from "./pages/Editor";
+import Profile from "./pages/Profile";
+import Settings from "./pages/Settings";
 
 function App() {
   return (
@@ -18,7 +21,12 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/register" element={<Auth key="register" />} />
             <Route path="/login" element={<Auth key="login" />} />
+            <Route path="/editor" element={<Editor />} />
+            <Route path="/editor/:slug" element={<Editor />} />
             <Route path="/article/:slug" element={<Article />} />
+            <Route path="/profile/:username" element={<Profile />} />
+            <Route path="/:username" element={<Profile />} />
+            <Route path="/settings" element={<Settings />} />
           </Routes>
         </main>
         <footer>

@@ -5,10 +5,10 @@ import ArticleMeta from "../components/ArticleMeta";
 import ArticleComments from "../components/ArticleComments";
 
 export default function Article() {
-  const { slug } = useParams(); // Get the article slug from the URL
-  const [article, setArticle] = useState(null); // State to store article data
-  const [loading, setLoading] = useState(true); // Loading state
-  const [error, setError] = useState(null); // Error state
+  const { slug } = useParams();
+  const [article, setArticle] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     // Function to fetch the article data
@@ -28,15 +28,22 @@ export default function Article() {
     }
   }, [slug]);
 
+  const handleFavoriteChange = (newFavorited, newFavoritesCount) => {
+    setArticle((prevArticle) => ({
+      ...prevArticle,
+      favorited: newFavorited,
+      favoritesCount: newFavoritesCount,
+    }));
+  };
+
   if (loading) {
-    return <div>Loading...</div>; // Display loading indicator
+    return <div>Loading...</div>;
   }
 
   if (error) {
-    return <div>{error}</div>; // Display error message if any
+    return <div>{error}</div>;
   }
 
-  // Destructure the article properties
   const { title, description, body } = article;
 
   return (
@@ -44,7 +51,7 @@ export default function Article() {
       <div className="banner">
         <div className="container">
           <h1>{title}</h1>
-          <ArticleMeta article={article} />
+          <ArticleMeta article={article} onFavoriteChange={handleFavoriteChange} />
         </div>
       </div>
       <div className="container page">
@@ -56,7 +63,7 @@ export default function Article() {
         </div>
         <hr />
         <div className="article-actions">
-          <ArticleMeta article={article} />
+          <ArticleMeta article={article} onFavoriteChange={handleFavoriteChange} />
         </div>
         <div className="row">
           <div className="col-xs-12 col-md-8 offset-md-2">

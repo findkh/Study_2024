@@ -22,7 +22,6 @@ function makeServer({ environment = "development" } = {}) {
           const start = Number(offset) * Number(limit);
           const end = start + Number(limit);
 
-          // eslint-disable-next-line prefer-rest-params
           const json = RestSerializer.prototype.serialize.apply(this, arguments);
 
           const computedArticle = (article) => {
@@ -276,6 +275,35 @@ function makeServer({ environment = "development" } = {}) {
         favorite.destroy();
 
         return article;
+      });
+
+      this.delete("/articles/:slug", (schema, request) => {
+        const { slug } = request.params;
+        const article = schema.articles.findBy({ slug });
+
+        if (article) {
+          article.destroy();
+          return new Response(204); // No Content 응답
+        } else {
+          return new Response(404, {}, { error: "Article not found" }); // 404 에러
+        }
+      });
+
+      this.put("/articles/:slug", (schema, request) => {
+        const { slug } = request.params;
+        const { article } = JSON.parse(request.requestBody);
+        const existingArticle = schema.articles.findBy({ slug });
+
+        if (existingArticle) {
+          return existingArticle.update(article);
+        } else {
+          return new Response(404, {}, { error: "Article not found" });
+        }
+      });
+
+      this.delete("/articles/:slug/comments/:commentId", (schema, request) => {
+        const { slug, commentId } = request.params;
+        return schema.comments.find(commentId).destroy();
       });
     },
   });

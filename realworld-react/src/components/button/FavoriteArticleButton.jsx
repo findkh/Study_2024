@@ -3,7 +3,14 @@ import classNames from "classnames";
 import axios from "axios";
 
 // 기사 즐겨찾기 버튼 컴포넌트
-export default function FavoriteArticleButton({ slug, favorited, favoritesCount, className = "", onFavoriteChange }) {
+export default function FavoriteArticleButton({
+  slug,
+  favorited,
+  favoritesCount,
+  className = "",
+  onFavoriteChange,
+  children,
+}) {
   const [isFavorited, setIsFavorited] = useState(favorited); // 즐겨찾기 상태
   const [isLoading, setIsLoading] = useState(false); // 버튼 로딩 상태
   const [currentFavoritesCount, setCurrentFavoritesCount] = useState(Number(favoritesCount) || 0); // 현재 즐겨찾기 개수
@@ -45,7 +52,7 @@ export default function FavoriteArticleButton({ slug, favorited, favoritesCount,
       disabled={isLoading} // 로딩 중 버튼 비활성화
     >
       <i className="ion-heart" />
-      {isLoading ? "Loading..." : currentFavoritesCount} {/* 로딩 중 표시 */}
+      {isLoading ? "Loading..." : children || currentFavoritesCount} {/* 로딩 중 표시 */}
     </button>
   );
 }
