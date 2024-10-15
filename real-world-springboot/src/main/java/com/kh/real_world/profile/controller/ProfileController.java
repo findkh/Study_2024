@@ -3,6 +3,8 @@ package com.kh.real_world.profile.controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,12 +26,18 @@ public class ProfileController {
 	@GetMapping("/")
 	public ResponseEntity<ProfileDTO> getProfile(@RequestParam(name = "email") String email) {
 		log.info("Profile GET 호출됨");
-		// JWT를 통해 현재 로그인한 사용자(조회하는 사람) 가져오기
+		
 		String loggedInUserEmail = SecurityContextHolder.getContext().getAuthentication().getName();
 		
-		// 서비스로 전달
 		ProfileDTO profileDTO = profileService.getProfile(loggedInUserEmail, email);
 		
 		return ResponseEntity.ok(profileDTO);
+	}
+	
+	@PutMapping("/update")
+	public ResponseEntity<ProfileDTO> updateProfile(@RequestBody ProfileDTO profileDTO) {
+		log.info("Profile UPDATE 호출");
+		ProfileDTO result = profileService.updateProfile(profileDTO);
+		return ResponseEntity.ok(result);
 	}
 }

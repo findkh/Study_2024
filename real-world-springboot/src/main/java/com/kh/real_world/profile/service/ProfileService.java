@@ -1,5 +1,6 @@
 package com.kh.real_world.profile.service;
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.kh.real_world.follow.repository.FollowRepository;
@@ -9,6 +10,7 @@ import com.kh.real_world.profile.exception.ProfileExceptions;
 import com.kh.real_world.profile.exception.ProfileTaskException;
 import com.kh.real_world.profile.repository.ProfileRepository;
 import com.kh.real_world.user.entity.UserEntity;
+import com.kh.real_world.user.exception.UserExceptions;
 import com.kh.real_world.user.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -49,5 +51,29 @@ public class ProfileService {
 			log.error("Error: {} with code {}", e.getMsg(), e.getCode());
 			throw e;
 		}
+	}
+	
+	public ProfileDTO updateProfile(ProfileDTO profileDTO) {
+		System.out.println("서비스단" + profileDTO.getEmail());
+		UserEntity user = userRepository.findByEmail(profileDTO.getEmail())
+				.orElseThrow(() -> UserExceptions.NOT_FOUND.get());
+		
+		String loggedInUserEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+		
+		if(!user.getEmail().equals(loggedInUserEmail)) {
+			throw ProfileExceptions.INVALID.get();
+		}
+		
+		ProfileEntity profile = profileRepository.findByUserId(user.getId())
+				.orElseThrow(() -> ProfileExceptions.NOT_FOUND.get());
+		
+		System.out.println(user);
+		System.out.println(profile);
+		
+		profile.changeBio(profileDTO.getBio());
+		
+		profileRepository.save(profile);
+		
+		return new ProfileDTO(profile);
 	}
 }

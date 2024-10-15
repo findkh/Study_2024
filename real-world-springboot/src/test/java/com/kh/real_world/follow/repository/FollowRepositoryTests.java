@@ -12,10 +12,9 @@ import com.kh.real_world.follow.entity.FollowEntity;
 import com.kh.real_world.user.entity.UserEntity;
 import com.kh.real_world.user.repository.UserRepository;
 
-import jakarta.transaction.Transactional;
-
 
 @SpringBootTest
+//@Transactional
 public class FollowRepositoryTests {
 	
 	@Autowired
@@ -25,11 +24,14 @@ public class FollowRepositoryTests {
 	private FollowRepository followRepository; // 팔로우 레포지토리
 	
 	@Test
-	@Transactional
+	
 	public void testFollowUser() {
 		// 팔로워와 팔로우 당하는 유저 조회
 		Optional<UserEntity> followerOpt = userRepository.findByEmail("user4@test.com");
 		Optional<UserEntity> followeeOpt = userRepository.findByEmail("user2@test.com");
+		
+		System.out.println("followerOpt: "+ followerOpt);
+		System.out.println("followeeOpt: "+ followeeOpt);
 
 		if (followerOpt.isPresent() && followeeOpt.isPresent()) {
 			UserEntity follower = followerOpt.get();
@@ -38,7 +40,11 @@ public class FollowRepositoryTests {
 			// 기존의 팔로우 관계 확인
 			Optional<FollowEntity> existingFollowOpt = followRepository.findByFollowerAndFollowee(follower, followee);
 			
+			System.out.println("여기..");
+			System.out.println(existingFollowOpt);
+			
 			if (existingFollowOpt.isPresent()) {
+//				System.out.println("삭제한다.." + follower.getId() + " " + followee.getId());
 				// 팔로우 관계가 이미 존재하면 삭제
 				followRepository.deleteByFollowerAndFollowee(follower.getId(), followee.getId());
 
@@ -47,6 +53,7 @@ public class FollowRepositoryTests {
 				assertThat(afterDeleteOpt).isEmpty(); // 삭제된 후 다시 조회 시 빈 Optional이어야 함
 				System.out.println("팔로우 관계가 삭제되었습니다.");
 			} else {
+//				System.out.println("삽입한다");
 				// 팔로우 관계가 존재하지 않으면 새로 생성
 				FollowEntity followEntity = FollowEntity.builder()
 					.follower(follower) // 팔로워 설정

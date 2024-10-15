@@ -1,4 +1,4 @@
-package com.kh.real_world.profile.entity;
+package com.kh.real_world.article.entity;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -7,8 +7,8 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import com.kh.real_world.article.entity.ArticleEntity;
-import com.kh.real_world.user.entity.UserEntity;
+import com.kh.real_world.profile.entity.ProfileEntity;
+import com.kh.real_world.tag.entity.TagEntity;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -17,46 +17,40 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.Setter;
 
 @Entity
-@Table(name = "tb_profile")
+@Table(name = "tb_article")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@Setter
 @Builder
-@ToString(exclude = "user")
 @EntityListeners(value = {AuditingEntityListener.class})
-public class ProfileEntity {
-	
+public class ArticleEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@OneToOne // UserEntity와 일대일 관계 설정
-	@JoinColumn(name = "user_id", referencedColumnName = "id") // 외래 키 설정
-	private UserEntity user; // UserEntity와의 관계를 설정
+	private String title;
 	
-	private String userName;
+	private String body;
 	
-	private String email;
+	// article과 profle은 다대일
+	@ManyToOne
+	@JoinColumn(name = "profile_id") // 외래키 컬럼명
+	private ProfileEntity profile;
 	
-	private String bio;
-	
-	private Boolean following;
-	
-	private String image;
-	
-	// ArticleEntity와의 관계 추가 (일대다)
-	@OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<ArticleEntity> articles; // 사용자의 기사 목록
+	// article과 tag의 관계는 일대다
+	@OneToMany(mappedBy = "article", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<TagEntity> tags; 
 	
 	@CreatedDate
 	private LocalDateTime createdDate;
@@ -64,7 +58,11 @@ public class ProfileEntity {
 	@LastModifiedDate
 	private LocalDateTime modifiedDate;
 	
-	public void changeBio(String bio) {
-		this.bio = bio;
+	public void changeTitle(String title) {
+		this.title = title;
+	}
+	
+	public void changeBody(String body) {
+		this.body = body;
 	}
 }
