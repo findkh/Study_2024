@@ -1,19 +1,18 @@
 package com.kh.server.controller;
 
-import java.util.Map;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.stereotype.Controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.Map;
 
 @Controller
 @CrossOrigin(origins = "http://localhost:5173")
 public class MessageController {
 
-private final ObjectMapper objectMapper = new ObjectMapper(); // ObjectMapper 인스턴스 생성
+	private final ObjectMapper objectMapper = new ObjectMapper(); // ObjectMapper 인스턴스 생성
 
 	@MessageMapping("/send") // "/app/send"에 도달하는 메시지를 처리합니다.
 	@SendTo("/topic/messages") // "/topic/messages"로 메시지를 전송합니다.
@@ -27,14 +26,14 @@ private final ObjectMapper objectMapper = new ObjectMapper(); // ObjectMapper �
 			System.out.println("Received callId: " + callId); // callId 콘솔에 출력
 			
 			// 응답 메시지 형성 (성공 또는 실패)
-			if (callId != null && callId != "") {
-				return "{\"status\": \"success\"}"; // 성공 메시지
+			if (callId != null && !callId.isEmpty()) {
+				return "{\"status\": \"success\", \"page\": \"callStart\"}"; // 성공 메시지
 			} else {
-				return "{\"status\": \"fail\"}"; // 실패 메시지
+				return "{\"status\": \"fail\", \"page\": \"callEnd\"}"; // 실패 메시지
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			return "{\"status\": \"fail\"}"; // 실패 메시지
+			return "{\"status\": \"fail\", \"page\": \"callEnd\"}"; // 실패 메시지
 		}
 	}
 }
