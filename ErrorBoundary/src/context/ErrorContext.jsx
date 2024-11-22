@@ -1,7 +1,6 @@
 import React, { createContext, useState, useCallback, useContext } from "react";
 import ErrorPage from "../page/ErrorPage";
 
-// ErrorContext는 context 객체입니다.
 export const ErrorContext = createContext();
 
 export const ErrorProvider = ({ children }) => {
@@ -21,5 +20,5 @@ export const ErrorProvider = ({ children }) => {
   );
 };
 
-// ErrorContext를 사용할 수 있는 훅을 만듭니다.
+// 훅
 export const useError = () => useContext(ErrorContext);

@@ -1,10 +1,9 @@
-import { useState } from "react";
-import "./App.css";
 import { ErrorProvider } from "./context/ErrorContext";
 import { Route, Routes } from "react-router-dom";
 import AuthProvider from "./context/AuthProvider";
 import ErrorPage from "./page/ErrorPage";
 import HomePage from "./page/HomePage";
+import { WebSocketProvider } from "./context/WebSocketProvider";
 
 function App() {
   return (
@@ -14,10 +13,12 @@ function App() {
           path="/t/:callId"
           element={
             <AuthProvider>
-              <HomePage />
+              <WebSocketProvider>
+                <HomePage />
+              </WebSocketProvider>
             </AuthProvider>
           }
-        ></Route>
+        />
         <Route path="*" element={<ErrorPage />} />
       </Routes>
     </ErrorProvider>

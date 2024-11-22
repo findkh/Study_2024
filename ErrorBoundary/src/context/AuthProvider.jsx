@@ -9,7 +9,6 @@ export const useAuth = () => useContext(AuthContext);
 
 // 사용자 인증을 요청함
 const AuthProvider = ({ children }) => {
-  console.log("AuthProvider 호출");
   const { callId } = useParams();
   const { handleError } = useError(); // useError로 handleError 가져오기
   const [isLoading, setIsLoading] = useState(true);
@@ -29,6 +28,7 @@ const AuthProvider = ({ children }) => {
 
     if (callId) {
       validateCallId(); // API 호출
+      console.log("인증 완료");
     }
   }, [callId, handleError]);
 

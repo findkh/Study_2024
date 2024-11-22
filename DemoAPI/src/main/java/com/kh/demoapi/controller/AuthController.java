@@ -16,9 +16,7 @@ public class AuthController {
 
     @PostMapping("/auth")
     public ResponseEntity<?> auth(@RequestHeader("Authorization") String callId) {
-        System.out.println("auth 호출됨");
-        // 시스템에서 받은 콜아이디를 출력
-        System.out.println("Received callId: " + callId);
+        System.out.println("auth 호출됨 " + "Received callId: " + callId);
 
         // MessageResponse 객체 생성
         MessageResponse response = new MessageResponse();
@@ -38,8 +36,8 @@ public class AuthController {
         response.setContents(contents);
 
         // ResponseEntity로 JSON 형태로 반환
-//        return ResponseEntity.ok(response);
-        return ResponseEntity.badRequest().build();
+        return ResponseEntity.ok(response);
+//        return ResponseEntity.badRequest().build();
     }
 
 }

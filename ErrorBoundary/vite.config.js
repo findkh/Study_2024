@@ -8,7 +8,8 @@ export default defineConfig(({ command, mode }) => {
     base: "/", // VITE_PUBLIC_URL을 base로 설정
     plugins: [react()],
     define: {
-      __APP_ENV__: JSON.stringify(env),
+      // __APP_ENV__: JSON.stringify(env),
+      global: "globalThis",
     },
     server: {
       proxy: {
@@ -16,6 +17,17 @@ export default defineConfig(({ command, mode }) => {
           target: `http://localhost:8006`,
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/auth/, "/call/auth"),
+        },
+        "/api": {
+          target: `http://localhost:8006`,
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/api/, "/fake/api"),
+        },
+        "/stomp": {
+          target: `ws://localhost:8006`,
+          ws: true,
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/stomp/, "/connect"),
         },
       },
     },
