@@ -1,0 +1,39 @@
+{
+  "name": "errorboundary",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0 --port 6173 --mode dev",
+    "build": "vite build",
+    "lint": "eslint .",
+    "start": "vite preview --host --port 6173"
+  },
+  "dependencies": {
+    "@stomp/stompjs": "^7.0.0",
+    "base-64": "^1.0.0",
+    "dotenv": "^16.4.5",
+    "react": "^18.2.0",
+    "react-content-loader": "^7.0.0",
+    "react-device-detect": "^2.2.3",
+    "react-dom": "^18.2.0",
+    "react-loading-skeleton": "^3.4.0",
+    "react-router-dom": "^6.19.0",
+    "react-spinners": "^0.13.8",
+    "socket.io-client": "^4.7.2",
+    "sockjs-client": "^1.6.1",
+    "stompjs": "^2.3.3"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.13.0",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.3",
+    "eslint": "^9.13.0",
+    "eslint-plugin-react": "^7.37.2",
+    "eslint-plugin-react-hooks": "^5.0.0",
+    "eslint-plugin-react-refresh": "^0.4.14",
+    "globals": "^15.11.0",
+    "vite": "^5.0.0"
+  }
+}
