@@ -1,0 +1,14 @@
+{
+  "msgKey": "reservation.di",
+  "contents": {
+    "input": {
+      "callId": "e23e27f2-1516-123e-7da3-5254008fb306",
+      "tenant": "BMH",
+      "params": {
+        "PATNO": "123456",
+        "DEPTNO": "cdd00236-94e6-4504-8e60-27a5f695dd78",
+        "DEPTNAME": "정형외과(OS)"
+      }
+    }
+  }
+}

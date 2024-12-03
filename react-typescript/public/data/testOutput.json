@@ -1,0 +1,12 @@
+{
+  "msgKey": "history",
+  "contents": {
+    "output": {
+      "callId": "573a394c-12b7-123e-7da3-5254008fb306",
+      "tenant": "BMH",
+      "params": {
+        "PATNO": "78910"
+      }
+    }
+  }
+}
